@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kat & Ben Wedding</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Ben & Kat</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#details">Details</a></li>
+                <li><a href="#rsvp">RSVP</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <img src="Photos/Website backgrounds flowers left.svg" class="floral floral-left" alt="Floral left" />
+        <div class="hero-content">
+            <div class="hero-parents">
+                <div class="hero-parent-name">Mary Hendry, Stephanie Land, and Robert Gorman</div>
+            </div>
+            <p class="hero-script">cordially invite you to join them for the wedding of their daughter and son,</p>
+            <div class="hero-couple-names">
+                <h1 class="hero-title">Katherine Hendry</h1>
+                <div class="hero-and">and</div>
+                <h1 class="hero-title">Benjamin Gorman</h1>
+            </div>
+            <div class="hero-bottom">
+                <div class="hero-date">Saturday, June 13th, 2026</div>
+                <div class="hero-location">Rocky Bay Cabin, Gig Harbor, Washington</div>
+            </div>
+        </div>
+        <img src="Photos/Website backgrounds flowers right.svg" class="floral floral-right" alt="Floral right" />
+        <div class="hero-background"></div>
+    </section>
+
+    <!-- Scrollytelling Scroll Container -->
+    <div class="scroll-container">
+        <!-- Interactive Timeline Section -->
+        <h2 class="section-title">Our Story</h2>
+        <section id="story" class="relationship-timeline">
+            <div class="timeline-layout">
+                <!-- Timeline (Left) -->
+                <div class="timeline-left">
+                    <svg id="timeline-svg" width="180" height="600"></svg>
+                    <div class="timeline-center-indicator hollow-indicator"></div>
+                </div>
+                <!-- Photo (Center) -->
+                <div class="timeline-photo-center">
+                    <img id="timeline-photo" src="" alt="Timeline Photo" style="display:none;" />
+                    <div id="relationship-duration" class="relationship-duration"></div>
+                </div>
+                <!-- Quotes/Text (Right) -->
+                <div class="timeline-right">
+                    <div class="quotes-title">Ben's Notes to Self</div>
+                    <div class="quote-placeholder">(Content unable to load)</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Details Section -->
+    <section id="details" class="details">
+        <div class="container">
+            <h2 class="section-title">Wedding Details</h2>
+            <div class="details-grid">
+                <div class="detail-card slide-in-left">
+                    <div class="card-icon">📅</div>
+                    <h3>Date & Time</h3>
+                    <p>Saturday, June 13, 2026</p>
+                </div>
+                <div class="detail-card slide-in-right">
+                    <div class="card-icon">📍</div>
+                    <h3>Venue</h3>
+                    <a href="https://maps.app.goo.gl/bHiZVGVsNEeMW5ub8"><p>Rocky Bay Cabin<br>19306 WA-302<br>Gig Harbor, WA</p></a>
+                </div>
+                <div class="detail-card slide-in-left">
+                    <div class="card-icon">👗</div>
+                    <h3>Dress Code</h3>
+                    <p>Cocktail Attire</p>
+                </div>
+                <div class="detail-card slide-in-right">
+                    <div class="card-icon">🎵</div>
+                    <h3>Reception</h3>
+                    <p>Dinner & dancing to follow<br>6:00 PM - 11:00 PM</p>
+                </div>
+                <div class="detail-card slide-in-right">
+                    <div class="card-icon">🏠</div>
+                    <h3>Lodging</h3>
+                    <p>There are various lodging options, including AirBNBs!<br>The couple or Mrs. Mary Hendry can advise.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Kat & Ben Wedding. Made with ❤️</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

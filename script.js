@@ -50,33 +50,36 @@ window.addEventListener('scroll', () => {
 });
 
 // Form submission handling
-document.querySelector('.rsvp-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-    
-    // Simple validation
-    if (!data.name || !data.email || !data.attending) {
-        alert('Please fill in all required fields.');
-        return;
-    }
-    
-    // Simulate form submission
-    const submitBtn = this.querySelector('.submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
-    
-    // Simulate API call
-    setTimeout(() => {
-        alert('Thank you for your RSVP! We\'ll be in touch soon.');
-        this.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 1500);
-});
+const rsvpForm = document.querySelector('.rsvp-form');
+if (rsvpForm) {
+    rsvpForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Simple validation
+        if (!data.name || !data.email || !data.attending) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+        
+        // Simulate form submission
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+            alert('Thank you for your RSVP! We\'ll be in touch soon.');
+            this.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }, 1500);
+    });
+}
 
 // Parallax effect for hero background
 window.addEventListener('scroll', () => {
@@ -142,7 +145,8 @@ function findPhotoFile(title, callback) {
         const img = new Image();
         img.onload = function() { found = true; callback(file); };
         img.onerror = function() { idx++; tryNext(); };
-        img.src = `photos/${file}`;
+        // Use encodeURIComponent to properly encode the filename for URL
+        img.src = `Photos/${encodeURIComponent(file)}`;
     }
     tryNext();
 }
@@ -167,11 +171,13 @@ function parseDate(str) {
 
 // Modified CSV parsing to guess extensions
 function parseTimelineCSV(results) {
+    console.log('Parsing timeline CSV, results:', results);
     const data = results.data;
     let rows = data;
     if (rows.length && rows[0][0].toLowerCase().includes('time')) {
         rows = rows.slice(1);
     }
+    console.log('Processing rows:', rows.length);
     filteredTimeline = rows
         .map(row => {
             const [date, title] = row;
@@ -181,9 +187,11 @@ function parseTimelineCSV(results) {
         })
         .filter(Boolean)
         .sort((a, b) => a.date - b.date);
+    console.log('Filtered timeline before file assignment:', filteredTimeline.length);
     // Now assign file names (as before)
     let pending = filteredTimeline.length;
     if (pending === 0) {
+        console.log('No timeline items found');
         onTimelineDataReady();
         return;
     }
@@ -191,11 +199,14 @@ function parseTimelineCSV(results) {
         findPhotoFile(item.title, function(file) {
             if (file) {
                 filteredTimeline[i].file = file;
+                console.log('Found file for', item.title, ':', file);
             } else {
                 filteredTimeline[i].file = null;
+                console.log('No file found for', item.title);
             }
             if (--pending === 0) {
                 filteredTimeline = filteredTimeline.filter(item => item.file);
+                console.log('Final filtered timeline length:', filteredTimeline.length);
                 onTimelineDataReady();
             }
         });
@@ -206,6 +217,9 @@ function loadTimelineCSV() {
     Papa.parse(CSV_PATH, {
         download: true,
         complete: parseTimelineCSV,
+        error: function(error) {
+            console.error('Error loading timeline CSV:', error);
+        },
         skipEmptyLines: true
     });
 }
@@ -285,9 +299,15 @@ function drawTimelineSVGWindowSmooth(data, centerMonthIdx) {
 }
 
 // Scroll-driven logic (uses filteredTimeline)
-const timelineSection = document.getElementById('relationship-timeline');
-const photoImg = document.getElementById('timeline-photo');
-const photoTitle = document.getElementById('timeline-photo-title');
+let timelineSection = null;
+let photoImg = null;
+
+// Initialize timeline elements when DOM is ready
+function initializeTimelineElements() {
+    timelineSection = document.getElementById('story');
+    photoImg = document.getElementById('timeline-photo');
+    console.log('Timeline elements initialized:', { timelineSection: !!timelineSection, photoImg: !!photoImg });
+}
 
 function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
@@ -326,11 +346,13 @@ const QUOTES_CSV_PATH = 'Timelines/Notes for Wedding Website.csv';
 let quotesTimeline = [];
 
 function parseQuotesCSV(results) {
+    console.log('Parsing quotes CSV, results:', results);
     const data = results.data;
     let rows = data;
     if (rows.length && rows[0][0].toLowerCase().includes('date')) {
         rows = rows.slice(1);
     }
+    console.log('Processing quote rows:', rows.length);
     quotesTimeline = rows
         .map(row => {
             const [date, quote] = row;
@@ -340,12 +362,16 @@ function parseQuotesCSV(results) {
         })
         .filter(Boolean)
         .sort((a, b) => a.date - b.date);
+    console.log('Quotes timeline length:', quotesTimeline.length);
 }
 
 function loadQuotesCSV() {
     Papa.parse(QUOTES_CSV_PATH, {
         download: true,
         complete: parseQuotesCSV,
+        error: function(error) {
+            console.error('Error loading quotes CSV:', error);
+        },
         skipEmptyLines: true
     });
 }
@@ -405,41 +431,66 @@ function getFractionalCenterDate(minDate, centerMonthIdx) {
 // Dynamically set scroll-container height for scrollytelling
 function setScrollContainerHeight() {
     const scrollContainer = document.querySelector('.scroll-container');
-    if (!scrollContainer || !filteredTimeline.length) return;
-    // Each photo gets a viewport height worth of scroll
-    const minHeight = Math.max(window.innerHeight * filteredTimeline.length, window.innerHeight * 2);
+    if (!scrollContainer || !filteredTimeline.length) {
+        console.log('Cannot set scroll container height:', !scrollContainer ? 'no scroll container' : 'no filtered timeline');
+        return;
+    }
+    // Each photo gets a viewport height worth of scroll, but cap it at a reasonable maximum
+    const baseHeight = window.innerHeight * filteredTimeline.length;
+    const minHeight = Math.min(baseHeight, window.innerHeight * 20); // Cap at 20 viewport heights
     scrollContainer.style.minHeight = minHeight + 'px';
+    console.log('Set scroll container height to:', minHeight, 'px (base was:', baseHeight, 'px)');
 }
 
 // Update scroll-container height when timeline data is loaded or window is resized
 function onTimelineDataReady() {
+    console.log('Timeline data ready, filtered timeline length:', filteredTimeline.length);
     setScrollContainerHeight();
     // Initial draw to set the SVG size and position
     drawTimelineSVGWindowSmooth(filteredTimeline, 0); 
     updateTimelineOnScroll();
+    // Add scroll event listeners now that data is ready
+    addScrollEventListeners();
 }
 
 // Update scroll-driven logic to use smooth moving window and correct photo/quote/duration snapping
 function updateTimelineOnScroll() {
-    if (!timelineSection || !filteredTimeline.length) return;
+    if (!timelineSection || !filteredTimeline.length) {
+        console.log('Timeline section or filtered timeline not ready:', { 
+            timelineSection: !!timelineSection, 
+            filteredTimelineLength: filteredTimeline ? filteredTimeline.length : 0 
+        });
+        return;
+    }
     const scrollContainer = document.querySelector('.scroll-container');
+    if (!scrollContainer) {
+        console.log('Scroll container not found');
+        return;
+    }
     const rect = scrollContainer.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const totalScroll = scrollContainer.offsetHeight - windowHeight;
     const scrolled = clamp(-rect.top, 0, totalScroll);
     const progress = totalScroll > 0 ? scrolled / totalScroll : 0;
+    
+    console.log('Scroll progress:', progress, 'scrolled:', scrolled, 'totalScroll:', totalScroll);
+    
     // Calculate floating month index
     const minDate = new Date(filteredTimeline[0].date);
     const maxDate = new Date(filteredTimeline[filteredTimeline.length - 1].date);
     const totalMonths = (maxDate.getFullYear() - minDate.getFullYear()) * 12 + (maxDate.getMonth() - minDate.getMonth());
     const centerMonthIdx = progress * totalMonths;
+    
+    console.log('Center month index:', centerMonthIdx);
+    
     // Find the latest photo whose date is <= the current center month
     const photo = getPhotoForCenterMonth(filteredTimeline, minDate, centerMonthIdx);
-    const photoImg = document.getElementById('timeline-photo');
     if (photo) {
-        photoImg.src = `photos/${photo.file}`;
+        console.log('Setting photo:', photo.file);
+        photoImg.src = `Photos/${encodeURIComponent(photo.file)}`;
         photoImg.style.display = 'block';
     } else {
+        console.log('No photo found for current month');
         photoImg.style.display = 'none';
     }
     // Draw the smoothly moving window timeline
@@ -456,29 +507,44 @@ function updateTimelineOnScroll() {
             // Replace line breaks with <br>
             const quoteHtmlText = quoteObj.quote.replace(/\r?\n/g, '<br>');
             quoteHtml = `<div class=\"quote-text\">&ldquo;${quoteHtmlText}&rdquo;</div>`;
+            console.log('Setting quote:', quoteObj.quote.substring(0, 50) + '...');
         } else {
             quoteHtml = '<div class="quote-placeholder">(Quotes/text coming soon)</div>';
+            console.log('No quote found for current date');
         }
         quoteDiv.innerHTML = titleHtml + quoteHtml;
     }
 
     // RELATIONSHIP DURATION: Compute and display under the photo
     if (document.getElementById('relationship-duration')) {
-        document.getElementById('relationship-duration').textContent = getRelationshipDuration(centerDate);
+        const duration = getRelationshipDuration(centerDate);
+        document.getElementById('relationship-duration').textContent = duration;
+        console.log('Setting duration:', duration);
     }
 }
 
-window.addEventListener('scroll', updateTimelineOnScroll);
-window.addEventListener('resize', () => {
-    setScrollContainerHeight();
-    updateTimelineOnScroll();
-});
 // Load quotes CSV on DOMContentLoaded
-const oldDOMContentLoaded = document.onreadystatechange;
 document.addEventListener('DOMContentLoaded', () => {
+    initializeTimelineElements();
     loadTimelineCSV();
-    setScrollContainerHeight();
-    updateTimelineOnScroll();
     loadQuotesCSV();
-    if (typeof oldDOMContentLoaded === 'function') oldDOMContentLoaded();
-}); 
+    // These will be called after the CSV data is loaded
+    // setScrollContainerHeight();
+    // updateTimelineOnScroll();
+});
+
+// Add scroll event listeners after timeline data is ready
+function addScrollEventListeners() {
+    console.log('Adding scroll event listeners');
+    window.addEventListener('scroll', updateTimelineOnScroll);
+    window.addEventListener('resize', () => {
+        setScrollContainerHeight();
+        updateTimelineOnScroll();
+    });
+    
+    // Also trigger an initial update
+    setTimeout(() => {
+        console.log('Triggering initial timeline update');
+        updateTimelineOnScroll();
+    }, 100);
+} 

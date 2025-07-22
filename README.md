@@ -7,9 +7,9 @@ A beautiful, modern wedding website with smooth scroll animations and responsive
 - ✨ **Smooth Scroll Animations** - Elements fade in and slide as you scroll
 - 📱 **Fully Responsive** - Works perfectly on all devices
 - 🎨 **Modern Design** - Clean, elegant styling with beautiful gradients
-- 📝 **RSVP Form** - Interactive form for guest responses
 - 🎯 **Smooth Navigation** - Fixed navbar with smooth scrolling to sections
 - 🌟 **Interactive Elements** - Hover effects and animations throughout
+- 📸 **Interactive Timeline** - Scrollytelling timeline with photos and quotes
 
 ## How to Use
 
@@ -33,10 +33,9 @@ A beautiful, modern wedding website with smooth scroll animations and responsive
 
 Edit `index.html` to update:
 - Names and wedding details
-- Story text
 - Venue information
 - Date and time
-- Contact information
+- Timeline photos and quotes (via CSV files)
 
 ### Changing Colors
 
@@ -45,16 +44,13 @@ In `styles.css`, look for these color variables:
 - Text colors: `#2c3e50`, `#555`, `#666`
 - Background colors: `#f8f9fa`, `white`
 
-### Adding Images
+### Adding Timeline Content
 
-Replace the placeholder in the story section:
-```html
-<div class="image-placeholder"></div>
-```
-With:
-```html
-<img src="your-image.jpg" alt="Your story" class="story-image">
-```
+The timeline photos and quotes are loaded from CSV files:
+- `Timelines/Wedding Planning - Photo Timeline.csv` - Contains photo titles and dates
+- `Timelines/Notes for Wedding Website.csv` - Contains quotes and dates
+
+Add photos to the `Photos/` directory with matching filenames from the CSV.
 
 ### Modifying Animations
 

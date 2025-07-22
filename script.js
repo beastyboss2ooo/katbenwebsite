@@ -49,37 +49,7 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Form submission handling
-const rsvpForm = document.querySelector('.rsvp-form');
-if (rsvpForm) {
-    rsvpForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-        
-        // Simple validation
-        if (!data.name || !data.email || !data.attending) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        
-        // Simulate form submission
-        const submitBtn = this.querySelector('.submit-btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(() => {
-            alert('Thank you for your RSVP! We\'ll be in touch soon.');
-            this.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 1500);
-    });
-}
+
 
 // Parallax effect for hero background
 window.addEventListener('scroll', () => {

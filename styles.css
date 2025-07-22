@@ -207,49 +207,7 @@ body {
     background: none !important;
 }
 
-/* Story Section */
-.story {
-    padding: 6rem 0;
-    background: transparent;
-}
 
-.story-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-.story-text p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    line-height: 1.8;
-    color: #555;
-}
-
-.story-image {
-    display: flex;
-    justify-content: center;
-}
-
-.image-placeholder {
-    width: 300px;
-    height: 400px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-}
-
-.image-placeholder::before {
-    content: '📸';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    opacity: 0.7;
-}
 
 /* Details Section */
 .details {
@@ -294,66 +252,7 @@ body {
     line-height: 1.6;
 }
 
-/* RSVP Section */
-.rsvp {
-    padding: 6rem 0;
-    background: transparent;
-}
 
-.rsvp-form {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid #e1e5e9;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.form-group textarea {
-    height: 120px;
-    resize: vertical;
-}
-
-.submit-btn {
-    width: 100%;
-    padding: 1rem 2rem;
-    background: linear-gradient(90deg, var(--golden) 0%, #f8f5e4 100%);
-    color: var(--juniper);
-    border: 1.5px solid var(--juniper);
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-    box-shadow: 0 1px 0 #fff;
-}
-
-.submit-btn:hover {
-    transform: translateY(-2px);
-    background: var(--desert-coral);
-    color: #fff;
-    border-color: var(--desert-coral);
-}
 
 /* Footer */
 .footer {
@@ -568,13 +467,7 @@ body {
     display: block;
 }
 
-.photo-title {
-    font-size: 1.4rem;
-    font-weight: 400;
-    margin-top: 0.5rem;
-    text-align: center;
-    text-shadow: 0 1px 0 #fff, 0 2px 1px #e6dcc3;
-}
+
 
 .timeline-right {
     display: flex;

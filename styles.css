@@ -669,3 +669,60 @@ body {
     display: none;
   }
 } 
+
+/* Zola link in hero */
+.hero-zola {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  margin-top: 0.5rem;
+}
+.hero-zola a {
+  color: var(--juniper);
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+/* Mobile-friendly vertical layout for scrollytelling */
+@media (max-width: 700px) {
+  .relationship-timeline {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: auto;
+    padding: 1rem 0;
+  }
+  .timeline-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 560px;
+    min-height: auto;
+    gap: 1rem;
+  }
+  .timeline-left {
+    align-items: center;
+    height: auto;
+    min-width: 0;
+    justify-content: center;
+  }
+  #timeline-svg {
+    height: 300px !important;
+  }
+  .timeline-center-indicator {
+    display: none;
+  }
+  .timeline-photo-center {
+    min-width: 0;
+    height: auto;
+    padding-bottom: 20px;
+  }
+  #timeline-photo {
+    max-width: min(90vw, 350px);
+    max-height: 60vh;
+  }
+  .timeline-right {
+    min-width: 0;
+    padding: 0 1rem;
+    font-size: 1.05rem;
+  }
+}

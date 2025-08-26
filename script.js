@@ -407,7 +407,8 @@ function setScrollContainerHeight() {
     }
     // Each photo gets a viewport height worth of scroll, but cap it at a reasonable maximum
     const baseHeight = window.innerHeight * filteredTimeline.length;
-    const minHeight = Math.min(baseHeight, window.innerHeight * 20); // Cap at 20 viewport heights
+    const maxVh = window.innerWidth <= 700 ? 12 : 20; // smaller cap on mobile
+    const minHeight = Math.min(baseHeight, window.innerHeight * maxVh);
     scrollContainer.style.minHeight = minHeight + 'px';
     console.log('Set scroll container height to:', minHeight, 'px (base was:', baseHeight, 'px)');
 }
